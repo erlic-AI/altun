@@ -27,18 +27,23 @@ Sistem lisansı izinli listede olmayan/belirtilmeyen veriyi otomatik dışlar, l
 
 ## 2. Adım adım kullanım
 
-1. **Kaggle notebook:** kaggle.com → Create → New Notebook.
-2. **Ayarlar:** sağ panel → Session options → **Accelerator: GPU T4 x2**, **Internet: On** (GitHub, Hugging Face ve veri indirmesi için; telefon doğrulaması gerekebilir).
-3. **Başlangıç hücresi:** `KAGGLE_START_CELL.py` içeriğinin tamamını tek hücreye yapıştırın. Google Drive gerekmez; kod GitHub'dan (`erlic-AI/ALTUN-1`) çekilir. İsterseniz en üstteki ayarları düzenleyin: `TRAINING_DURATION_HOURS`, `CONTINUE_FROM` (`"hf"`: Hugging Face'teki yayınlanmış ağırlıklardan devam, `"input"`: önceki notebook çıktısından devam, `"none"`: sıfırdan), `PEAK_LR`.
-4. **Çalıştırın** (Run). Hücre sırayla: ortam → GPU → kodu GitHub'dan al → (ağırlıkları HF'den indir) → preflight (DDP + autotune) → birim testleri → veri indirme/hazırlama → eğitim → değerlendirme → grafik/rapor → ZIP.
-5. **Takip:** hücre çıktısında her 10 adımda loss, lr, grad norm, tokens/s, geçen/kalan süre görünür; her 250 adımda val loss; 30 dakikada bir checkpoint. Sağ panel → Logs; ayrıca `ALTUN-1-RESULTS/logs/*.csv`.
-6. **Sonuçları indirme:** Kaggle'da **Save Version → Save & Run All (Commit)** ile çalıştırırsanız (kapalı sekmeyle de koşar), bittikten sonra notebook sayfasında **Output** sekmesinden `ALTUN-1-RESULTS.zip` veya klasörü indirin.
+1. **Gereksinim:** en az bir NVIDIA GPU (biz 2×T4 üzerinde çalıştırdık), Internet. Kaggle ücretsiz notebook'ta: Accelerator **GPU T4 x2**, Internet **On**.
+2. **Çalıştırma:** kendi makinenizde veya Kaggle hücresinde (başına `!` koyarak):
+   ```
+   git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1
+   pip install -r requirements.txt     # Kaggle'da gerekmez
+   python start.py
+   ```
+3. **Seçenekler:** `--hours 10` (süre), `--continue-from hf|input|none|<klasör>` (hf: Hugging Face'teki yayınlanmış ağırlıklardan devam [varsayılan], input: Kaggle Input'taki önceki çıktı, none: sıfırdan), `--peak-lr`, `--resume false` (temiz başla), `--output-dir`, `--smoke` (duman testi).
+4. **Sırayla yapılanlar:** ağırlık indirme → preflight (DDP + autotune) → birim testleri → veri indirme/hazırlama → eğitim → değerlendirme → grafik/rapor → ZIP. Tüm GPU'ları otomatik kullanır.
+5. **Takip:** çıktıda her 10 adımda loss, lr, grad norm, tokens/s, geçen/kalan süre; her 250 adımda val loss; 30 dakikada bir checkpoint. Ayrıca `ALTUN-1-RESULTS/logs/*.csv`.
+6. **Sonuçlar:** `./ALTUN-1-RESULTS/` (Kaggle'da `/kaggle/working/ALTUN-1-RESULTS/`). Kaggle'da **Save Version → Save & Run All (Commit)** ile çalıştırırsanız bittikten sonra **Output** sekmesinden indirebilirsiniz.
 
 ### Oturum sınırı ve devam etme
-Kaggle GPU oturumları en fazla ~12 saattir ve kesintisiz çalışma garantisi yoktur. `TRAINING_DURATION_HOURS` **toplam** eğitim süresidir (oturumlar arası birikir). 12 saatlik oturumda veri hazırlama + değerlendirme için pay bırakmak üzere **9.5–10 saat** önerilir.
-- Oturum kesilirse: Commit çalıştırdıysanız çıktıdaki `checkpoints/` korunur. Yeni notebook'ta önceki versiyonun **Output'unu Input olarak ekleyin** ve hücreyi `RESUME_FROM_CHECKPOINT="auto"` ile tekrar çalıştırın; en son geçerli checkpoint otomatik alınır.
+Kaggle GPU oturumları en fazla ~12 saattir ve kesintisiz çalışma garantisi yoktur. `--hours` **toplam** eğitim süresidir (oturumlar arası birikir). 12 saatlik oturumda veri hazırlama + değerlendirme için pay bırakmak üzere **9.5–10 saat** önerilir.
+- Oturum kesilirse: Commit çalıştırdıysanız çıktıdaki `checkpoints/` korunur. Yeni notebook'ta önceki versiyonun **Output'unu Input olarak ekleyin** ve hücreyi ``--resume auto`` ile tekrar çalıştırın; en son geçerli checkpoint otomatik alınır.
 - Aynı oturumda tekrar çalıştırmak da kaldığı yerden devam eder (`"auto"`).
-- `RESUME_FROM_CHECKPOINT=False` **sıfırdan** başlatır ve eski checkpoint'leri siler (yanlışlıkla eski eğitim yüklenmez).
+- `--resume false` **sıfırdan** başlatır ve eski checkpoint'leri siler (yanlışlıkla eski eğitim yüklenmez).
 - Resume'da tokenizer hash'i ve model config'i kontrol edilir; uyuşmazlık net hata verir.
 
 ---
@@ -70,7 +75,7 @@ print(ask(model, tok, dev, "Question: What is gcd(48, 18)?\nAnswer:", temperatur
 ## 5. Sorun giderme
 | Belirti | Neden / çözüm |
 |---|---|
-| `git clone başarısız` / `HF indirme başarısız` | Internet Off; repo/model adı yanlış; geçici ağ hatası (tekrar deneyin). `CONTINUE_FROM="none"` ile HF'siz de başlatabilirsiniz |
+| `git clone başarısız` / `HF indirme başarısız` | Internet Off; repo/model adı yanlış; geçici ağ hatası (tekrar deneyin). `--continue-from none` ile HF'siz de başlatabilirsiniz |
 | `Hiç veri kaynağı bulunamadı` | Bölüm 1'e göre veri ekleyin |
 | `Preflight başarısız: CUDA` | Accelerator'ı GPU T4 x2 yapıp oturumu yeniden başlatın |
 | DDP uyarısı → tek GPU | `preflight.json` içinde ayrıntı; eğitim tek GPU ile (aynı token/adım, daha uzun accumulation) devam eder |
@@ -84,7 +89,7 @@ Yayın: kod GitHub'da, model ağırlıkları Hugging Face'te (`erlic/ALTUN-1`) y
 
 
 ## 7. Devam eğitimi (v2/v3 notları)
-- `CONTINUE_FROM="hf"` (varsayılan): yayınlanmış ağırlıklardan devam, yeni optimizer/LR programı; tokenizer aynı kalır. Önceki model bulunamazsa eğitim **başlamaz** (sessizce sıfırdan başlamaz).
+- `--continue-from hf` (varsayılan): yayınlanmış ağırlıklardan devam, yeni optimizer/LR programı; tokenizer aynı kalır. Önceki model bulunamazsa eğitim **başlamaz** (sessizce sıfırdan başlamaz).
 - Veri karışımı: matematik QA + sentetik adım adım çözümler ağırlıklı; sentetik veri yeni seed'le üretilir (aynı örnekler tekrar görülmez); zayıf kategoriler ve Türkçe için üreteçler vardır.
 - `torch.compile` ilk adımlarda gerçek donanımda ölçülür; kazanç <%8 veya hata varsa otomatik kapanır.
 - Tepe LR varsayılanı 2.5e-4, süre 7 saat. Değerlendirme: ALTUN 119'luk set (dağılım içi), Türkçe mini set, bağımsız GSM8K/MATH örnekleri.

@@ -7,3 +7,6 @@ raw_data/
 *.zip
 .env
 publish_all.sh
+ALTUN-1-RESULTS/
+ALTUN-1-PREV/
+ALTUN-1-model/

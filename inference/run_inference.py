@@ -58,7 +58,7 @@ def demo(model, tok, device: str, **kw) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model-dir", default="/kaggle/working/ALTUN-1-RESULTS/final_model")
+    ap.add_argument("--model-dir", default="ALTUN-1-model", help="final_model klasörü (HF'den indirilen veya eğitimden çıkan)")
     ap.add_argument("--prompt", default=None)
     ap.add_argument("--device", default="auto")
     ap.add_argument("--max-new-tokens", type=int, default=256)

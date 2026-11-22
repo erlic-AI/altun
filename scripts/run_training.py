@@ -1,5 +1,5 @@
 """ALTUN 1 uçtan uca orkestrasyon: preflight → veri → autotune → eğitim (DDP) → değerlendirme → paketleme.
-Kaggle başlangıç hücresi bunu çağırır. Çıktılar HER ZAMAN tek sabit klasöre yazılır."""
+start.py bunu çağırır (Kaggle'da veya herhangi bir GPU makinesinde). Çıktılar HER ZAMAN tek sabit klasöre yazılır."""
 from __future__ import annotations
 
 import glob
@@ -15,7 +15,8 @@ from typing import Dict, Optional
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 
-FIXED_RESULTS = "/kaggle/working/ALTUN-1-RESULTS"
+FIXED_RESULTS = ("/kaggle/working/ALTUN-1-RESULTS" if os.path.isdir("/kaggle/working")
+                 else os.path.join(PROJECT_ROOT, "ALTUN-1-RESULTS"))
 SUBDIRS = ["final_model", "checkpoints", "evaluations", "logs", "reports", "plots"]
 ZIP_EXCLUDE_DIRS = {"checkpoints"}  # büyük ara dosyalar ZIP'e girmez (final_model girer)
 
@@ -249,7 +250,7 @@ def run(settings: Dict) -> int:
     print(f"Sonuç klasörü : {results}")
     print(f"ZIP           : {zp}  ({os.path.getsize(zp) / 1e6:.1f} MB)")
     print(f"Toplam süre   : {(time.time() - t_all) / 3600:.2f} saat")
-    print("Kaggle'da: sağ panel → Output sekmesi, ya da 'Save Version → Save & Run All' sonrası Output'tan indirin.")
+    print("Sonuçlar yukarıdaki klasörde; ZIP aynı klasörün içinde. Kaggle'da Output sekmesinden indirin.")
     print("=" * 70)
     return 0 if rc == 0 else 6
 
