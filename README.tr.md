@@ -27,15 +27,12 @@ Sistem lisansı izinli listede olmayan/belirtilmeyen veriyi otomatik dışlar, l
 
 ## 2. Adım adım kullanım
 
-1. **ZIP'i Drive'a yükleyin:** `ALTUN-1.zip` → drive.google.com → Yeni → Dosya yükleme.
-2. **Paylaşım bağlantısı:** dosyaya sağ tık → Paylaş → Genel erişim → **"Bağlantıya sahip herkes"** (Görüntüleyen) → Bağlantıyı kopyala.
-3. **Dosya ID'si:** bağlantı `https://drive.google.com/file/d/`**`1AbCdEfG...`**`/view?usp=sharing` biçimindedir; `/d/` ile `/view` arasındaki kısım ID'dir. (Klasör bağlantısı değil, ZIP dosyası bağlantısı kullanın.)
-4. **Kaggle notebook:** kaggle.com → Create → New Notebook.
-5. **GPU/İnternet ayarları:** sağ panel → Session options → **Accelerator: GPU T4 x2**, **Internet: On** (Drive'dan indirme için; telefon doğrulaması gerekebilir). Verinizi Dataset olarak eklediyseniz "Add Input" ile ekleyin.
-6. **Başlangıç hücresi:** `KAGGLE_START_CELL.py` içeriğinin tamamını tek hücreye yapıştırın ve en üstteki ayarları düzenleyin: `DRIVE_FILE_ID`, `TRAINING_DURATION_HOURS`, `RESUME_FROM_CHECKPOINT`, `OUTPUT_DIR`.
-7. **Çalıştırın** (Run). Hücre sırayla: ortam → GPU → ZIP indir/doğrula/aç → bağımlılık → preflight (DDP + autotune) → birim testleri → veri hazırlama → eğitim → değerlendirme → grafik/rapor → ZIP.
-8. **Takip:** hücre çıktısında her 10 adımda loss, lr, grad norm, tokens/s, geçen/kalan süre görünür; her 250 adımda val loss; 30 dakikada bir checkpoint. Sağ panel → Logs; ayrıca `ALTUN-1-RESULTS/logs/*.csv`.
-9. **Sonuçları indirme:** Kaggle'da **Save Version → Save & Run All (Commit)** ile çalıştırırsanız (kapalı sekmeyle de koşar), bittikten sonra notebook sayfasında **Output** sekmesinden `ALTUN-1-RESULTS.zip` veya klasörü indirin. Etkileşimli oturumda sağ panel → Output → `/kaggle/working`.
+1. **Kaggle notebook:** kaggle.com → Create → New Notebook.
+2. **Ayarlar:** sağ panel → Session options → **Accelerator: GPU T4 x2**, **Internet: On** (GitHub, Hugging Face ve veri indirmesi için; telefon doğrulaması gerekebilir).
+3. **Başlangıç hücresi:** `KAGGLE_START_CELL.py` içeriğinin tamamını tek hücreye yapıştırın. Google Drive gerekmez; kod GitHub'dan (`erlic-AI/ALTUN-1`) çekilir. İsterseniz en üstteki ayarları düzenleyin: `TRAINING_DURATION_HOURS`, `CONTINUE_FROM` (`"hf"`: Hugging Face'teki yayınlanmış ağırlıklardan devam, `"input"`: önceki notebook çıktısından devam, `"none"`: sıfırdan), `PEAK_LR`.
+4. **Çalıştırın** (Run). Hücre sırayla: ortam → GPU → kodu GitHub'dan al → (ağırlıkları HF'den indir) → preflight (DDP + autotune) → birim testleri → veri indirme/hazırlama → eğitim → değerlendirme → grafik/rapor → ZIP.
+5. **Takip:** hücre çıktısında her 10 adımda loss, lr, grad norm, tokens/s, geçen/kalan süre görünür; her 250 adımda val loss; 30 dakikada bir checkpoint. Sağ panel → Logs; ayrıca `ALTUN-1-RESULTS/logs/*.csv`.
+6. **Sonuçları indirme:** Kaggle'da **Save Version → Save & Run All (Commit)** ile çalıştırırsanız (kapalı sekmeyle de koşar), bittikten sonra notebook sayfasında **Output** sekmesinden `ALTUN-1-RESULTS.zip` veya klasörü indirin.
 
 ### Oturum sınırı ve devam etme
 Kaggle GPU oturumları en fazla ~12 saattir ve kesintisiz çalışma garantisi yoktur. `TRAINING_DURATION_HOURS` **toplam** eğitim süresidir (oturumlar arası birikir). 12 saatlik oturumda veri hazırlama + değerlendirme için pay bırakmak üzere **9.5–10 saat** önerilir.
@@ -73,7 +70,7 @@ print(ask(model, tok, dev, "Question: What is gcd(48, 18)?\nAnswer:", temperatur
 ## 5. Sorun giderme
 | Belirti | Neden / çözüm |
 |---|---|
-| `ZIP indirilemedi` | Internet Off; paylaşım "herkes" değil; Drive kotası (24 sa. bekleyin / kopyasını kendi Drive'ınıza alın). Alternatif: ZIP'i Kaggle Dataset yapıp `/kaggle/input`'tan kopyalayın |
+| `git clone başarısız` / `HF indirme başarısız` | Internet Off; repo/model adı yanlış; geçici ağ hatası (tekrar deneyin). `CONTINUE_FROM="none"` ile HF'siz de başlatabilirsiniz |
 | `Hiç veri kaynağı bulunamadı` | Bölüm 1'e göre veri ekleyin |
 | `Preflight başarısız: CUDA` | Accelerator'ı GPU T4 x2 yapıp oturumu yeniden başlatın |
 | DDP uyarısı → tek GPU | `preflight.json` içinde ayrıntı; eğitim tek GPU ile (aynı token/adım, daha uzun accumulation) devam eder |
@@ -83,20 +80,11 @@ print(ask(model, tok, dev, "Question: What is gcd(48, 18)?\nAnswer:", temperatur
 ## 6. Yapı
 `altun/` model+tokenizer+checkpoint+generation · `data/` veri hattı · `training/` trainer/DDP/izleme · `evaluation/` testler+benchmark+ALTUN seti · `inference/` · `scripts/` orkestrasyon + Kaggle hücresi · `tests/` · `config/` · `docs/` teknik & test raporu.
 
-Gizlilik: Bu depo özel geliştirme içindir; GitHub/Hugging Face yayını hazırlanmamıştır.
+Yayın: kod GitHub'da, model ağırlıkları Hugging Face'te (`erlic/ALTUN-1`) yayınlanmıştır; Apache-2.0, veri atıfları için `NOTICE`.
 
 
-## 7. İkinci tur (v2): önceki modelden devam
-1. Kaggle'da yeni notebook → Accelerator **GPU T4 x2**, **Internet ON**.
-2. Sağ panel **Add Input** → önceki ALTUN notebook'unun **Output**'unu ekleyin (içinde `ALTUN-1-RESULTS/final_model` olmalı).
-3. `KAGGLE_START_CELL.py`'yi yapıştırın, `DRIVE_FILE_ID`'yi girin (`INIT_FROM_PREVIOUS=True`, süre 9 saat). Çalıştırın, ardından **Save & Run All (Commit)** ile çıktıyı kalıcılaştırın.
-- Önceki model bulunamazsa eğitim **başlamaz** (sessizce sıfırdan başlamaz).
-- Tokenizer önceki modelle aynı kalır; veri v2 karışımıyla (matematik QA + sentetik adım adım işlem çözümleri ağırlıklı) yeniden hazırlanır.
-- `torch.compile` ilk adımlarda gerçek donanımda ölçülür; kazanç <%8 veya hata varsa otomatik kapanır (`training_result`/rapordaki "torch.compile" satırı).
-- Not: v2 kodunun GPU kısımları (init-from, compile ölçümü) bu geliştirme ortamında çalıştırılamadı (torch yok); Kaggle'daki ilk dakikalarda log'da `[init]` ve `[compile]` satırlarını kontrol edin.
-
-### v3 notu (üçüncü tur)
-- Önceki tur modelinin üstüne devam; sentetik veri yeni seed'le yeniden üretilir (aynı örnekler tekrar görülmez), zayıf kategoriler (algoritma analizi, lineer cebir, kalkülüs, Lean, ispat boşlukları) ve Türkçe için üreteçler eklendi.
-- Eğitim süresi varsayılanı 7 saat (9 saatlik GPU kotası için), tepe LR 2.5e-4.
-- Değerlendirme artık ayrıca: **Türkçe mini set** (32 el yazımı soru) ve **bağımsız GSM8K/MATH test örnekleri** (indirilip eğitimden dışlanır; sonuçlar olduğu gibi raporlanır).
-- Dürüstlük notu: ALTUN 119'luk set ile eğitim üreteçleri aynı beceri alanlarını hedefler, yani o set "dağılım içi"dir; bağımsız ölçüm için GSM8K/MATH ve Türkçe mini sete bakın.
+## 7. Devam eğitimi (v2/v3 notları)
+- `CONTINUE_FROM="hf"` (varsayılan): yayınlanmış ağırlıklardan devam, yeni optimizer/LR programı; tokenizer aynı kalır. Önceki model bulunamazsa eğitim **başlamaz** (sessizce sıfırdan başlamaz).
+- Veri karışımı: matematik QA + sentetik adım adım çözümler ağırlıklı; sentetik veri yeni seed'le üretilir (aynı örnekler tekrar görülmez); zayıf kategoriler ve Türkçe için üreteçler vardır.
+- `torch.compile` ilk adımlarda gerçek donanımda ölçülür; kazanç <%8 veya hata varsa otomatik kapanır.
+- Tepe LR varsayılanı 2.5e-4, süre 7 saat. Değerlendirme: ALTUN 119'luk set (dağılım içi), Türkçe mini set, bağımsız GSM8K/MATH örnekleri.

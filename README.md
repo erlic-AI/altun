@@ -18,7 +18,7 @@ A complete, from-scratch engineering stack (no pretrained weights anywhere):
 | Verifiable synthetic math generator (arithmetic, algebra, number theory, graphs, calculus, Lean, ...; EN + TR) | `data/synthetic_math.py` |
 | Training: 2-GPU DDP, FP16, wall-clock cosine LR, atomic checkpoints + resume, `torch.compile` with measured fallback | `training/` |
 | Evaluation: 119-question ALTUN set, Turkish mini set, GSM8K/MATH test samples | `evaluation/` |
-| One-cell Kaggle launcher | `KAGGLE_START_CELL.py`, `scripts/run_training.py` |
+| One-cell Kaggle launcher (clones this repo, continues from the Hugging Face weights) | `KAGGLE_START_CELL.py`, `scripts/run_training.py` |
 
 ## Training history (all numbers measured on Kaggle 2×T4)
 
@@ -53,11 +53,11 @@ python -m inference.run_inference --model-dir ALTUN-1-model --prompt "What is 12
 
 The model expects the format `Problem: <question>\nSolution:` (the CLI adds it for you; use `--raw` to disable). Use greedy decoding (the default) for math. It is a custom architecture, so it does **not** load with `transformers`; use the code in this repo.
 
-## Reproduce / continue training (Kaggle, free 2×T4)
+## Reproduce / continue training (Kaggle, free 2×T4, no Google Drive needed)
 
-1. Put this repo as a ZIP on Google Drive (or fork and adapt the launcher), open a Kaggle notebook with **GPU T4 ×2** and **Internet on**.
-2. Paste `KAGGLE_START_CELL.py`, set `DRIVE_FILE_ID`; to continue from a previous run add that run's output as a notebook Input (`INIT_FROM_PREVIOUS = True`).
-3. The pipeline downloads the open-licensed data, preflights the hardware, trains for `TRAINING_DURATION_HOURS`, evaluates, and writes everything to `/kaggle/working/ALTUN-1-RESULTS/`.
+1. Create a Kaggle notebook with **Accelerator: GPU T4 ×2** and **Internet: On**.
+2. Paste the contents of [`KAGGLE_START_CELL.py`](KAGGLE_START_CELL.py) into one cell and run it. It clones this repo, downloads the released weights from Hugging Face (`CONTINUE_FROM = "hf"`), fetches the open-licensed training data, runs preflight checks, trains for `TRAINING_DURATION_HOURS`, evaluates, and writes everything to `/kaggle/working/ALTUN-1-RESULTS/`.
+3. Set `CONTINUE_FROM = "none"` to train from scratch, or `"input"` to continue from a previous notebook output added as an Input. Use **Save & Run All** to keep the outputs.
 
 Full Turkish instructions: [README.tr.md](README.tr.md). Technical report: [docs/TECHNICAL_REPORT.md](docs/TECHNICAL_REPORT.md). Test report (what was and was not tested): [docs/TEST_REPORT.md](docs/TEST_REPORT.md).
 

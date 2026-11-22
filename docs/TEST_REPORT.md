@@ -54,7 +54,7 @@ Ortam: Python 3.13, **PyTorch YOK, GPU YOK** (2×T4 hiç denenmedi). Tarih: 2026
 | DDP (2 GPU) çalışması, NCCL, deadlock | hayır | `training.distributed` self-check preflight'ta koşar |
 | Autotune, gerçek tokens/s ve VRAM ölçümü | hayır | Kaggle'da ölçülür |
 | evaluation/evaluate.py model testleri (forward/backward/generation/long-context/batch) | hayır | Eğitim sonrası koşar → `reports/test_report.md` |
-| Google Drive indirme (`kaggle_start_cell.py`) | hayır | Ağ yok; yalnızca syntax kontrolü |
+| GitHub/HF tabanlı Kaggle başlatıcı (`KAGGLE_START_CELL.py`) | hayır | Ağ yok; yalnızca syntax kontrolü (Drive tabanlı eski sürüm Kaggle'da çalıştı, bu yeni sürüm henüz denenmedi) |
 | `fetch_open_data.py` gerçek ağ indirmesi (GitHub/HF/Wikipedia) | hayır | Sandbox tüm bu adreslere 403 verdi; yalnızca metin temizleme, kategori tarama, ZIP ayıklama **sahte HTTP ile test edildi (4 test)** |
 | MiniF2F / Lean formal doğrulama | hayır | Lean doğrulayıcı yok; kapsam dışı (benchmark `not_run` raporlar) |
 
