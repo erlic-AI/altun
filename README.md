@@ -7,7 +7,7 @@
 **erlic AI · Independent AI Research**
 
 [Hugging Face](https://huggingface.co/erlic/ALTUN-1) ·
-[Releases](https://github.com/erlic-AI/altun/releases)
+[Releases](https://github.com/erlic-AI/altun/altun)
 
 **ALTUN 1.0.0 — First public release**
 
