@@ -1,4 +1,19 @@
+<div align="center">
+
 # ALTUN 1
+
+### Compact Adaptive Computation Research
+
+**erlic AI · Independent AI Research**
+
+[Hugging Face](https://huggingface.co/erlic/ALTUN-1) ·
+[Releases](https://github.com/erlic-AI/altun/releases)
+
+**ALTUN 1.0.0 — First public release**
+
+</div>
+
+---
 
 **A small (197M-parameter) decoder-only language model for mathematics and theoretical computer science, trained from scratch on 2×T4 GPUs by [erlic AI](https://github.com/erlic-AI).**
 
