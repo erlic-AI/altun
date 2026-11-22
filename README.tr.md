@@ -30,7 +30,7 @@ Sistem lisansı izinli listede olmayan/belirtilmeyen veriyi otomatik dışlar, l
 1. **Gereksinim:** en az bir NVIDIA GPU (biz 2×T4 üzerinde çalıştırdık), Internet. Kaggle ücretsiz notebook'ta: Accelerator **GPU T4 x2**, Internet **On**.
 2. **Çalıştırma:** kendi makinenizde veya Kaggle hücresinde (başına `!` koyarak):
    ```
-   git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1
+   git clone https://github.com/erlic-AI/altun ALTUN-1 && cd ALTUN-1
    pip install -r requirements.txt     # Kaggle'da gerekmez
    python start.py
    ```

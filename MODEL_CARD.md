@@ -14,7 +14,7 @@ tags:
 
 # ALTUN 1 (v0.1)
 
-A 197M-parameter decoder-only language model for mathematics and theoretical computer science, **trained from scratch** (no pretrained weights) by erlic AI on Kaggle 2×T4 GPUs. Code, training pipeline and evaluation: https://github.com/erlic-AI/ALTUN-1
+A 197M-parameter decoder-only language model for mathematics and theoretical computer science, **trained from scratch** (no pretrained weights) by erlic AI on Kaggle 2×T4 GPUs. Code, training pipeline and evaluation: https://github.com/erlic-AI/altun
 
 **This is a small research prototype, not a reliable math solver.** It often produces fluent step-by-step solutions that contain wrong calculations.
 
@@ -28,7 +28,7 @@ A 197M-parameter decoder-only language model for mathematics and theoretical com
 ## How to use
 
 ```bash
-git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1
+git clone https://github.com/erlic-AI/altun ALTUN-1 && cd ALTUN-1
 pip install torch safetensors pyyaml psutil huggingface_hub
 huggingface-cli download erlic/ALTUN-1 --local-dir ALTUN-1-model
 python -m inference.run_inference --model-dir ALTUN-1-model --prompt "What is 12 + 15?"
@@ -38,7 +38,7 @@ Prompt format: `Problem: <question>\nSolution:` (added automatically by the CLI)
 
 ## Training data
 
-About 1.94B training tokens over three sequential runs (each continued from the previous weights): Mathlib4, Lean 4 core, Metamath set.mm, TheAlgorithms/Python, HoTT book, English and Turkish Wikipedia (math/CS categories), NuminaMath-CoT, MetaMathQA, GSM8K train, MATH train, and programmatically generated, verifiable step-by-step problems (EN + TR, ~30% Turkish). Each source passed a license gate (allow-list), exact and near-duplicate removal, and 13-gram decontamination against GSM8K/MATH test data and the ALTUN evaluation set. Per-source licenses and caveats: see [NOTICE](https://github.com/erlic-AI/ALTUN-1/blob/main/NOTICE).
+About 1.94B training tokens over three sequential runs (each continued from the previous weights): Mathlib4, Lean 4 core, Metamath set.mm, TheAlgorithms/Python, HoTT book, English and Turkish Wikipedia (math/CS categories), NuminaMath-CoT, MetaMathQA, GSM8K train, MATH train, and programmatically generated, verifiable step-by-step problems (EN + TR, ~30% Turkish). Each source passed a license gate (allow-list), exact and near-duplicate removal, and 13-gram decontamination against GSM8K/MATH test data and the ALTUN evaluation set. Per-source licenses and caveats: see [NOTICE](https://github.com/erlic-AI/altun/blob/main/NOTICE).
 
 ## Training
 
@@ -74,6 +74,6 @@ Apache-2.0. Training data includes CC-BY-SA material (Wikipedia, HoTT book) and 
   title  = {ALTUN 1: a small from-scratch math and theoretical-CS language model},
   author = {erlic AI},
   year   = {2026},
-  url    = {https://github.com/erlic-AI/ALTUN-1}
+  url    = {https://github.com/erlic-AI/altun}
 }
 ```

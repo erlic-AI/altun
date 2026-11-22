@@ -3,5 +3,5 @@ title: "ALTUN 1: a small from-scratch math and theoretical-CS language model"
 authors:
   - name: "erlic AI"
 license: Apache-2.0
-repository-code: "https://github.com/erlic-AI/ALTUN-1"
+repository-code: "https://github.com/erlic-AI/altun"
 version: "0.1.0"

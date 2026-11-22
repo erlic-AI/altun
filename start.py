@@ -6,7 +6,7 @@
   python start.py --continue-from none     # SIFIRDAN eğit (--peak-lr verilmezse config'teki 6e-4)
   python start.py --continue-from /yol/final_model   # yerel bir final_model klasöründen devam
   python start.py --smoke                  # çok kısa duman testi (gerçek eğitim DEĞİL)
-Kaggle notebook hücresi:  !git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1 && python start.py
+Kaggle notebook hücresi:  !git clone https://github.com/erlic-AI/altun ALTUN-1 && cd ALTUN-1 && python start.py
 Önkoşul: pip install -r requirements.txt (Kaggle'da hazır), Internet açık (veri + ağırlık indirme)."""
 import argparse
 import os

@@ -59,7 +59,7 @@ Per-category numbers (e.g. Arithmetic 81%, Formal 83%, but Algorithms 0% and Log
 ## Quick start (inference)
 
 ```bash
-git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1
+git clone https://github.com/erlic-AI/altun ALTUN-1 && cd ALTUN-1
 pip install torch safetensors pyyaml psutil
 pip install -U huggingface_hub
 huggingface-cli download erlic/ALTUN-1 --local-dir ALTUN-1-model
@@ -71,14 +71,14 @@ The model expects the format `Problem: <question>\nSolution:` (the CLI adds it f
 ## Reproduce / continue training (any machine with NVIDIA GPU(s); tested on 2×T4)
 
 ```bash
-git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1
+git clone https://github.com/erlic-AI/altun ALTUN-1 && cd ALTUN-1
 pip install -r requirements.txt        # already present on Kaggle
 python start.py                        # continues from the released weights, 7 hours
 ```
 
 `start.py` downloads the weights from Hugging Face, fetches the open-licensed training data, runs hardware preflight checks, trains, evaluates, and writes everything to `./ALTUN-1-RESULTS/` (on Kaggle: `/kaggle/working/ALTUN-1-RESULTS/`).
 Useful options: `--hours 10`, `--continue-from none` (train from scratch), `--continue-from /path/to/final_model`, `--smoke` (tiny test run), `--output-dir`.
-It automatically uses all visible GPUs (2×T4 DDP in our runs). On a **free Kaggle notebook** (GPU T4 ×2, Internet on) run in a cell: `!git clone https://github.com/erlic-AI/ALTUN-1 && cd ALTUN-1 && python start.py`, then *Save & Run All* to keep the outputs. The training code was run end-to-end only on 2×T4; other setups are untested.
+It automatically uses all visible GPUs (2×T4 DDP in our runs). On a **free Kaggle notebook** (GPU T4 ×2, Internet on) run in a cell: `!git clone https://github.com/erlic-AI/altun ALTUN-1 && cd ALTUN-1 && python start.py`, then *Save & Run All* to keep the outputs. The training code was run end-to-end only on 2×T4; other setups are untested.
 
 Full Turkish instructions: [README.tr.md](README.tr.md). Technical report: [docs/TECHNICAL_REPORT.md](docs/TECHNICAL_REPORT.md). Test report (what was and was not tested): [docs/TEST_REPORT.md](docs/TEST_REPORT.md).
 
