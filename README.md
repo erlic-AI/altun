@@ -9,7 +9,7 @@
 [Hugging Face](https://huggingface.co/erlic/ALTUN-1) ·
 [Results](https://github.com/erlic-AI/altun/blob/main/results/evaluation_summary.md)
 
-**ALTUN 1.0.0 — First public release**
+**ALTUN 1.0 — First public release**
 
 </div>
 
