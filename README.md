@@ -19,7 +19,7 @@
 
 > **Status: v0.1 research prototype.** It writes step-by-step solutions in a fixed format and is decent at simple arithmetic and short formal/proof-completion questions. It is **not** a reliable calculator or solver: on independent benchmarks it scores **1.5% on GSM8K and 5.0% on MATH** (details below). It makes no claim about open problems such as P vs NP.
 
-Model weights: **https://huggingface.co/erlic/ALTUN-1** · Turkish guide: [README.tr.md](README.tr.md) · Model card: [MODEL_CARD.md](MODEL_CARD.md)
+[Turkish guide](README.tr.md) · [Model card](MODEL_CARD.md)
 
 ## What is in this repository
 
