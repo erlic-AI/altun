@@ -1,0 +1,26 @@
+# ALTUN 1 model konfigürasyonu. Parametre sayıları TAHMİNDİR; gerçek sayı preflight raporunda ölçülür.
+active_preset: altun1-main
+vocab_size: 16384          # tokenizer.vocab_size ile birebir eşleşmeli (preflight kontrol eder)
+context_length: 1024
+rope_theta: 10000.0
+norm_eps: 1.0e-5
+tie_embeddings: true
+presets:
+  altun1-smoke:            # yalnızca duman testi / dry-run
+    n_layers: 2
+    d_model: 128
+    n_heads: 4
+    n_kv_heads: 2
+    intermediate_size: 352
+  altun1-small:            # ~90M, hızlı ve az veriyle daha doygun
+    n_layers: 12
+    d_model: 768
+    n_heads: 12
+    n_kv_heads: 4
+    intermediate_size: 2048
+  altun1-main:             # ~200M, 12 saatlik 2xT4 bütçesi için varsayılan
+    n_layers: 16
+    d_model: 1024
+    n_heads: 16
+    n_kv_heads: 4
+    intermediate_size: 2816

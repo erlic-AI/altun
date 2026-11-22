@@ -1,0 +1,37 @@
+# Veri hattı. Kaynaklar raw_data/<kaynak>/ (veya data_roots) altında, her kaynakta source.json bulunmalı.
+data_roots:
+  - raw_data
+  - /kaggle/input
+work_dir: outputs/data       # işlenmiş veri (train.bin, val.bin, test.bin, rapor)
+seed: 1337
+vocab_size: 16384
+tokenizer_train_max_chars: 200000000
+allowed_licenses:            # bunun dışındaki / belirtilmemiş lisanslar OTOMATİK DIŞLANIR
+  - Apache-2.0
+  - MIT
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - CC0-1.0
+  - CC-BY-4.0
+  - CC-BY-SA-4.0
+  - CC-BY-3.0
+  - Public-Domain
+  - own-work
+mix_targets:                 # token bazlı hedef oranlar (v2: soru-çözüm ve hesaplama ağırlıklı)
+  formal: 0.12               # Mathlib/Lean/Metamath
+  english_math: 0.08         # Wikipedia/ders kitabı açıklamaları
+  math_qa: 0.35              # NuminaMath, MetaMathQA, GSM8K/MATH eğitim setleri
+  synthetic_math: 0.30       # kodla üretilen adım adım doğrulanabilir problemler (EN+TR, v3: zayıf kategoriler)
+  cs_theory: 0.08
+  turkish_math: 0.07
+near_dup_skip_categories:    # çok satırlı QA/sentetik veride yalnızca tam kopya taranır (hız)
+  - math_qa
+  - synthetic_math
+min_doc_chars: 64
+max_doc_chars: 2000000
+near_dup_threshold: 0.85
+near_dup_enabled: true
+val_fraction: 0.01
+test_fraction: 0.01
+min_total_tokens: 5000000    # bunun altında gerçek eğitim reddedilir (dry-run hariç)
+decontamination_ngram: 13

@@ -1,0 +1,8 @@
+# Kaggle GPU imajında bunların hepsi hazır gelir; ekstra kurulum gerekmez.
+torch>=2.1
+numpy>=1.24
+pyyaml>=6.0
+psutil>=5.9
+matplotlib>=3.7
+safetensors>=0.4      # model.safetensors için (yoksa model.pt'ye düşülür)
+pytest>=7.0           # birim testleri için

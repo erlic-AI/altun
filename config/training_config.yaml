@@ -1,0 +1,23 @@
+# Wall-clock tabanlı eğitim. LR programı geçen süreye (epoch/step'e değil) bağlıdır.
+duration_hours: 12.0
+checkpoint_interval_minutes: 30
+eval_interval_steps: 250
+eval_batches: 20
+log_interval_steps: 10
+system_metrics_interval_seconds: 30
+seed: 1337
+tokens_per_step: 131072      # global (tüm GPU'lar x accumulation)
+micro_batch_size: 8          # GPU başına; autotune bunu değiştirebilir
+peak_lr: 6.0e-4
+min_lr_ratio: 0.1
+warmup_steps: 200
+weight_decay: 0.1
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0
+fp16: true                   # T4: BF16 yok, FP16 + GradScaler
+grad_checkpointing: true
+prefetch_batches: 4
+max_checkpoints: 2           # en son + bir önceki güvenli checkpoint
+min_free_disk_gb: 3.0
+compile: auto                # torch.compile: gerçek donanımda ölçülür; hata veya <%8 kazançta otomatik kapanır
